@@ -54,14 +54,39 @@ type ChatMessage = {
   content: string
 }
 
-const API_BASE = "http://65.1.64.63:4321";
+const rawApiBase =
+  import.meta.env.VITE_API_URL ??
+  import.meta.env.VITE_API_BASE ??
+  'http://localhost:8000'
+const API_BASE = rawApiBase.replace(/\/+$/, '')
+// const API_BASE = "http://65.1.64.63:4321";
 
 const navItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: '🏠' },
-  { id: 'chat', label: 'AI Chat', icon: '💬' },
-  { id: 'maintenance', label: 'Property Services', icon: '🔧' },
-  { id: 'pricing', label: 'Market Analysis', icon: '💰' },
-  { id: 'documents', label: 'Documents', icon: '🗂️' },
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    iconUrl: 'https://unpkg.com/@tabler/icons@2.47.0/icons/home.svg',
+  },
+  {
+    id: 'chat',
+    label: 'AI Chat',
+    iconUrl: 'https://unpkg.com/@tabler/icons@2.47.0/icons/messages.svg',
+  },
+  {
+    id: 'maintenance',
+    label: 'Property Services',
+    iconUrl: 'https://unpkg.com/@tabler/icons@2.47.0/icons/tool.svg',
+  },
+  {
+    id: 'pricing',
+    label: 'Market Analysis',
+    iconUrl: 'https://unpkg.com/@tabler/icons@2.47.0/icons/chart-line.svg',
+  },
+  {
+    id: 'documents',
+    label: 'Documents',
+    iconUrl: 'https://unpkg.com/@tabler/icons@2.47.0/icons/folder.svg',
+  },
 ] as const
 
 const suggestedPrompts = [
@@ -124,6 +149,7 @@ function App() {
   const [activePage, setActivePage] = useState<(typeof navItems)[number]['id']>(
     'dashboard',
   )
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [dashboard, setDashboard] = useState<DashboardData | null>(null)
   const [dashboardLoading, setDashboardLoading] = useState(true)
   const [briefing, setBriefing] = useState('')
@@ -148,6 +174,10 @@ function App() {
   const [uploadState, setUploadState] = useState('')
   const [docQuestion, setDocQuestion] = useState('')
   const [docAnswer, setDocAnswer] = useState('')
+
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
+  const navOrder = navItems.map((item) => item.id)
+  const activeIndex = navOrder.indexOf(activePage)
 
   useEffect(() => {
     const timer = setInterval(() => setTimeNow(new Date()), 1000)
@@ -198,6 +228,37 @@ function App() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chatMessages, chatLoading])
+
+  useEffect(() => {
+    setIsSidebarOpen(false)
+  }, [activePage])
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    const touch = event.touches[0]
+    if (!touch) return
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY }
+  }
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    if (isSidebarOpen || !touchStartRef.current) return
+    const touch = event.changedTouches[0]
+    if (!touch) return
+    const deltaX = touch.clientX - touchStartRef.current.x
+    const deltaY = touch.clientY - touchStartRef.current.y
+    touchStartRef.current = null
+
+    if (Math.abs(deltaX) < 60 || Math.abs(deltaX) < Math.abs(deltaY) * 1.5) {
+      return
+    }
+
+    if (deltaX < 0 && activeIndex < navOrder.length - 1) {
+      setActivePage(navOrder[activeIndex + 1])
+    }
+
+    if (deltaX > 0 && activeIndex > 0) {
+      setActivePage(navOrder[activeIndex - 1])
+    }
+  }
 
   useEffect(() => {
     if (activePage !== 'pricing' || pricingNote) return
@@ -310,10 +371,15 @@ function App() {
   const revenue = dashboard?.revenue
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-icon">🏘️</div>
+          <div className="brand-icon">
+            <img
+              src="https://unpkg.com/@tabler/icons@2.47.0/icons/building-community.svg"
+              alt="Skyline Estates"
+            />
+          </div>
           <div>
             <p className="brand-title">Skyline Estates AI</p>
             <p className="brand-subtitle">Property Operations</p>
@@ -327,7 +393,7 @@ function App() {
               onClick={() => setActivePage(item.id)}
               type="button"
             >
-              <span className="nav-icon">{item.icon}</span>
+              <img className="nav-icon" src={item.iconUrl} alt={item.label} />
               <span>{item.label}</span>
             </button>
           ))}
@@ -340,14 +406,35 @@ function App() {
           <p className="sidebar-card-subtext">Units occupied this morning</p>
         </div>
       </aside>
+      <button
+        type="button"
+        className="sidebar-overlay"
+        aria-label="Close menu"
+        onClick={() => setIsSidebarOpen(false)}
+      />
 
-      <main className="main">
+      <main
+        className="main"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <header className="topbar">
           <div>
             <p className="eyebrow">Skyline Estates Portfolio</p>
             <h1>Portfolio Command Center</h1>
             <p className="muted">Austin, TX</p>
           </div>
+          <button
+            type="button"
+            className="menu-toggle"
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            <img
+              src="https://unpkg.com/@tabler/icons@2.47.0/icons/menu-2.svg"
+              alt="Menu"
+            />
+          </button>
           <div className="time-card">
             <p className="time-label">{formatDate(timeNow)}</p>
             <p className="time-value">{formatTime(timeNow)}</p>
@@ -667,6 +754,23 @@ function App() {
             </div>
           </section>
         )}
+        <nav className="mobile-nav" aria-label="Primary">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={`mobile-nav-item ${activePage === item.id ? 'active' : ''}`}
+              onClick={() => setActivePage(item.id)}
+            >
+              <img
+                className="mobile-nav-icon"
+                src={item.iconUrl}
+                alt={item.label}
+              />
+              <span className="mobile-nav-label">{item.label}</span>
+            </button>
+          ))}
+        </nav>
       </main>
     </div>
   )
