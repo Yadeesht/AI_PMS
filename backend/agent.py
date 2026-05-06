@@ -4,6 +4,7 @@ from statistics import mean
 
 import dotenv
 from langchain_core.tools import tool
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import AzureChatOpenAI
 from langgraph.prebuilt import create_react_agent
 from supabase import create_client
@@ -387,14 +388,12 @@ TOOLS = [
 
 def build_agent():
     _get_supabase()
-    model = AzureChatOpenAI(
-        azure_deployment="gpt-4.1-mini",
-        azure_endpoint=os.getenv("AZURE_AI_ENDPOINT"),
-        api_key=os.getenv("AZURE_AI_CREDENTIAL"),
-        api_version="2024-12-01-preview",
-        max_completion_tokens=10000,
-        max_retries=2,
-    )
+    model_name = os.getenv("MODEL_NAME", "gpt-4.1-mini")
+    if model_name.startswith("gemini"):
+        model = ChatGoogleGenerativeAI(
+            model=model_name,
+            google_api_key=os.getenv("GEMINI_API_KEY"),
+        )
     return create_react_agent(model, TOOLS)
 
 
