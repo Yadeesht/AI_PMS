@@ -54,12 +54,93 @@ type ChatMessage = {
   content: string
 }
 
-// const rawApiBase =
-//   import.meta.env.VITE_API_URL ??
-//   import.meta.env.VITE_API_BASE ??
-//   'http://localhost:8000'
-// const API_BASE = rawApiBase.replace(/\/+$/, '')
-const API_BASE = "http://65.1.64.63:4321";
+const mockDashboard: DashboardData = {
+  occupancy: {
+    date: '2026-05-06',
+    total_rooms: 128,
+    occupied_count: 112,
+    vacant_count: 12,
+    maintenance_count: 4,
+    occupancy_pct: 88,
+    vacant_rooms: ['1202', '1408', '1604', '1701', '1903', '2105'],
+    out_of_service_rooms: ['0912', '1210', '1515', '2302'],
+  },
+  revenue: {
+    period: 'today',
+    date: '2026-05-06',
+    total_revenue: 28740,
+    room_revenue: 25190,
+    rooms_occupied: 112,
+    occupancy_pct: 88,
+    revpar: 224,
+  },
+  maintenance: {
+    count: 9,
+    overdue_count: 2,
+    tickets: [
+      {
+        ticket_id: 'MT-1043',
+        room_number: '1205',
+        reported_by: 'Front Desk',
+        issue: 'AC cooling intermittent',
+        category: 'HVAC',
+        priority: 'high',
+        status: 'open',
+        reported_at: '2026-05-06T08:15:00',
+        assigned_vendor: 'Austin HVAC Pro',
+        estimated_cost: 420,
+      },
+      {
+        ticket_id: 'MT-1044',
+        room_number: '0912',
+        reported_by: 'Housekeeping',
+        issue: 'Water leak under sink',
+        category: 'Plumbing',
+        priority: 'critical',
+        status: 'in_progress',
+        reported_at: '2026-05-06T07:20:00',
+        assigned_vendor: 'Lone Star Plumbing',
+        estimated_cost: 310,
+      },
+      {
+        ticket_id: 'MT-1045',
+        room_number: '1611',
+        reported_by: 'Resident App',
+        issue: 'Elevator call button stuck',
+        category: 'Electrical',
+        priority: 'medium',
+        status: 'open',
+        reported_at: '2026-05-06T09:05:00',
+        assigned_vendor: 'Capitol Electricians',
+        estimated_cost: 180,
+      },
+      {
+        ticket_id: 'MT-1046',
+        room_number: '2302',
+        reported_by: 'Front Desk',
+        issue: 'Bathroom exhaust fan noisy',
+        category: 'General',
+        priority: 'low',
+        status: 'open',
+        reported_at: '2026-05-06T09:40:00',
+        assigned_vendor: 'QuickFix General',
+        estimated_cost: 95,
+      },
+    ],
+  },
+}
+
+const staticBriefing =
+  'Occupancy sits at 88% with 12 units available and 4 out of service. Two maintenance tickets are overdue, including a plumbing leak in Unit 0912. Revenue tracking is on pace with a $28.7K day, and RevPAU holds at $224.'
+
+const staticPricingNote =
+  "You're priced $20-$25 below market average. Nearby comps sit near 84% occupancy. Raise Studio pricing to $169 for better upside this week."
+
+const staticDocAnswer =
+  'Two invoices are unpaid: Austin HVAC Pro ($974) and Lone Star Plumbing ($389). All contracts and licenses are active.'
+
+const staticChatFallback =
+  'Here is the latest snapshot: occupancy 88%, revenue $28.7K today, and two overdue service tickets. Let me know if you want a deeper breakdown.'
 
 const navItems = [
   {
@@ -150,10 +231,10 @@ function App() {
     'dashboard',
   )
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [dashboard, setDashboard] = useState<DashboardData | null>(null)
-  const [dashboardLoading, setDashboardLoading] = useState(true)
-  const [briefing, setBriefing] = useState('')
-  const [briefingLoading, setBriefingLoading] = useState(false)
+  const [dashboard] = useState<DashboardData>(mockDashboard)
+  const [dashboardLoading] = useState(false)
+  const [briefing] = useState(staticBriefing)
+  const [briefingLoading] = useState(false)
   const [timeNow, setTimeNow] = useState(new Date())
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
@@ -168,8 +249,8 @@ function App() {
   const chatEndRef = useRef<HTMLDivElement | null>(null)
 
   const [maintenanceFilter, setMaintenanceFilter] = useState('all')
-  const [pricingNote, setPricingNote] = useState('')
-  const [pricingLoading, setPricingLoading] = useState(false)
+  const [pricingNote] = useState(staticPricingNote)
+  const [pricingLoading] = useState(false)
 
   const [uploadState, setUploadState] = useState('')
   const [docQuestion, setDocQuestion] = useState('')
@@ -183,47 +264,6 @@ function App() {
     const timer = setInterval(() => setTimeNow(new Date()), 1000)
     return () => clearInterval(timer)
   }, [])
-
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        setDashboardLoading(true)
-        const response = await fetch(`${API_BASE}/dashboard`)
-        if (!response.ok) throw new Error('Dashboard fetch failed')
-        const data = (await response.json()) as DashboardData
-        setDashboard(data)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setDashboardLoading(false)
-      }
-    }
-
-    fetchDashboard()
-  }, [])
-
-  useEffect(() => {
-    if (!dashboard || briefing) return
-    const fetchBriefing = async () => {
-      try {
-        setBriefingLoading(true)
-        const response = await fetch(`${API_BASE}/chat`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'Generate property briefing for the portfolio' }),
-        })
-        if (!response.ok) throw new Error('Briefing fetch failed')
-        const data = await response.json()
-        setBriefing(data.reply ?? '')
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setBriefingLoading(false)
-      }
-    }
-
-    fetchBriefing()
-  }, [dashboard, briefing])
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -260,95 +300,55 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    if (activePage !== 'pricing' || pricingNote) return
-    const fetchPricing = async () => {
-      try {
-        setPricingLoading(true)
-        const response = await fetch(`${API_BASE}/chat`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'suggest pricing for residential units this week' }),
-        })
-        if (!response.ok) throw new Error('Pricing fetch failed')
-        const data = await response.json()
-        setPricingNote(data.reply ?? '')
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setPricingLoading(false)
-      }
+  const getStaticChatReply = (message: string) => {
+    const normalized = message.trim().toLowerCase()
+    if (normalized.includes('occupancy')) {
+      return 'Occupancy is 88% today with 112 units filled and 12 vacant.'
     }
+    if (normalized.includes('overdue') || normalized.includes('service')) {
+      return 'There are 2 overdue service requests. Highest priority is the leak in Unit 0912.'
+    }
+    if (normalized.includes('briefing')) {
+      return staticBriefing
+    }
+    if (normalized.includes('pricing') || normalized.includes('market')) {
+      return staticPricingNote
+    }
+    return staticChatFallback
+  }
 
-    fetchPricing()
-  }, [activePage, pricingNote])
-
-  const sendChat = async (message: string) => {
+  const sendChat = (message: string) => {
     if (!message.trim() || chatLoading) return
     setChatMessages((prev) => [...prev, { role: 'user', content: message }])
     setChatInput('')
-    try {
-      setChatLoading(true)
-      const response = await fetch(`${API_BASE}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message }),
-      })
-      if (!response.ok) throw new Error('Chat request failed')
-      const data = await response.json()
-      setChatMessages((prev) => [...prev, { role: 'assistant', content: data.reply }])
-    } catch (error) {
-      console.error(error)
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: 'Something went wrong. Please try again in a moment.',
-        },
-      ])
-    } finally {
+    setChatLoading(true)
+    const reply = getStaticChatReply(message)
+    setTimeout(() => {
+      setChatMessages((prev) => [...prev, { role: 'assistant', content: reply }])
       setChatLoading(false)
-    }
+    }, 350)
   }
 
-  const handleUpload = async (file?: File) => {
+  const handleUpload = (file?: File) => {
     if (!file) return
-    try {
-      setUploadState('Uploading...')
-      const payload = new FormData()
-      payload.append('file', file)
-      const response = await fetch(`${API_BASE}/documents/upload`, {
-        method: 'POST',
-        body: payload,
-      })
-      if (!response.ok) throw new Error('Upload failed')
-      const data = await response.json()
-      setUploadState(`Uploaded ${data.filename}`)
-    } catch (error) {
-      console.error(error)
-      setUploadState('Upload failed. Try again.')
-    }
+    setUploadState(`Uploaded ${file.name}`)
   }
 
-  const handleDocQuestion = async () => {
+  const handleDocQuestion = () => {
     if (!docQuestion.trim()) return
-    try {
-      setDocAnswer('Thinking...')
-      const response = await fetch(`${API_BASE}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: docQuestion }),
-      })
-      if (!response.ok) throw new Error('Doc question failed')
-      const data = await response.json()
-      setDocAnswer(data.reply ?? '')
-    } catch (error) {
-      console.error(error)
-      setDocAnswer('Unable to answer right now.')
+    const normalized = docQuestion.trim().toLowerCase()
+    if (normalized.includes('unpaid')) {
+      setDocAnswer(staticDocAnswer)
+      return
     }
+    if (normalized.includes('insurance')) {
+      setDocAnswer('Commercial property insurance is active at $28.4K.')
+      return
+    }
+    setDocAnswer(staticDocAnswer)
   }
 
-  const maintenanceTickets = dashboard?.maintenance?.tickets ?? []
+  const maintenanceTickets = dashboard.maintenance.tickets
 
   const filteredTickets = useMemo(() => {
     if (maintenanceFilter === 'all') return maintenanceTickets
@@ -367,8 +367,8 @@ function App() {
     )
     .slice(0, 3)
 
-  const occupancy = dashboard?.occupancy
-  const revenue = dashboard?.revenue
+  const occupancy = dashboard.occupancy
+  const revenue = dashboard.revenue
 
   return (
     <div className={`app-shell ${isSidebarOpen ? 'sidebar-open' : ''}`}>
