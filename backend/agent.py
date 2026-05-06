@@ -46,9 +46,7 @@ def _avg_rate(rooms, room_type):
     return mean(rates) if rates else None
 
 
-@tool
-def get_occupancy(date: str | None = None):
-    """Return today's occupancy percent and vacant room list."""
+def _get_occupancy_data(date: str | None = None):
     rooms = _get_rooms()
     total_rooms = len(rooms)
 
@@ -68,6 +66,12 @@ def get_occupancy(date: str | None = None):
         "vacant_rooms": [room.get("room_number") for room in vacant],
         "out_of_service_rooms": [room.get("room_number") for room in maintenance],
     }
+
+
+@tool
+def get_occupancy(date: str | None = None):
+    """Return today's occupancy percent and vacant room list."""
+    return _get_occupancy_data(date)
 
 
 @tool
@@ -181,7 +185,7 @@ def suggest_pricing(room_type: str | None = None, date: str | None = None):
         "penthouse_suite": _avg_rate(rooms, "Penthouse Suite"),
     }
 
-    occupancy = get_occupancy(date).get("occupancy_pct", 0)
+    occupancy = _get_occupancy_data(date).get("occupancy_pct", 0)
 
     def competitor_avg(field):
         values = [comp[field] for comp in competitors if comp.get(field) is not None]
