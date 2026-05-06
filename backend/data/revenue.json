@@ -1,0 +1,343 @@
+{
+  "daily_revenue": [
+    {
+      "date": "2026-04-07",
+      "rooms_occupied": 31,
+      "occupancy_pct": 62,
+      "room_revenue": 5821,
+      "fb_revenue": 820,
+      "other_revenue": 210,
+      "total_revenue": 6851
+    },
+    {
+      "date": "2026-04-08",
+      "rooms_occupied": 33,
+      "occupancy_pct": 66,
+      "room_revenue": 6190,
+      "fb_revenue": 910,
+      "other_revenue": 185,
+      "total_revenue": 7285
+    },
+    {
+      "date": "2026-04-09",
+      "rooms_occupied": 35,
+      "occupancy_pct": 70,
+      "room_revenue": 6560,
+      "fb_revenue": 980,
+      "other_revenue": 220,
+      "total_revenue": 7760
+    },
+    {
+      "date": "2026-04-10",
+      "rooms_occupied": 38,
+      "occupancy_pct": 76,
+      "room_revenue": 7130,
+      "fb_revenue": 1100,
+      "other_revenue": 260,
+      "total_revenue": 8490
+    },
+    {
+      "date": "2026-04-11",
+      "rooms_occupied": 42,
+      "occupancy_pct": 84,
+      "room_revenue": 7880,
+      "fb_revenue": 1240,
+      "other_revenue": 310,
+      "total_revenue": 9430
+    },
+    {
+      "date": "2026-04-12",
+      "rooms_occupied": 45,
+      "occupancy_pct": 90,
+      "room_revenue": 8440,
+      "fb_revenue": 1380,
+      "other_revenue": 340,
+      "total_revenue": 10160
+    },
+    {
+      "date": "2026-04-13",
+      "rooms_occupied": 44,
+      "occupancy_pct": 88,
+      "room_revenue": 8250,
+      "fb_revenue": 1290,
+      "other_revenue": 315,
+      "total_revenue": 9855
+    },
+    {
+      "date": "2026-04-14",
+      "rooms_occupied": 36,
+      "occupancy_pct": 72,
+      "room_revenue": 6750,
+      "fb_revenue": 990,
+      "other_revenue": 240,
+      "total_revenue": 7980
+    },
+    {
+      "date": "2026-04-15",
+      "rooms_occupied": 34,
+      "occupancy_pct": 68,
+      "room_revenue": 6380,
+      "fb_revenue": 940,
+      "other_revenue": 200,
+      "total_revenue": 7520
+    },
+    {
+      "date": "2026-04-16",
+      "rooms_occupied": 37,
+      "occupancy_pct": 74,
+      "room_revenue": 6940,
+      "fb_revenue": 1050,
+      "other_revenue": 255,
+      "total_revenue": 8245
+    },
+    {
+      "date": "2026-04-17",
+      "rooms_occupied": 39,
+      "occupancy_pct": 78,
+      "room_revenue": 7310,
+      "fb_revenue": 1120,
+      "other_revenue": 270,
+      "total_revenue": 8700
+    },
+    {
+      "date": "2026-04-18",
+      "rooms_occupied": 41,
+      "occupancy_pct": 82,
+      "room_revenue": 7690,
+      "fb_revenue": 1190,
+      "other_revenue": 295,
+      "total_revenue": 9175
+    },
+    {
+      "date": "2026-04-19",
+      "rooms_occupied": 46,
+      "occupancy_pct": 92,
+      "room_revenue": 8630,
+      "fb_revenue": 1410,
+      "other_revenue": 355,
+      "total_revenue": 10395
+    },
+    {
+      "date": "2026-04-20",
+      "rooms_occupied": 47,
+      "occupancy_pct": 94,
+      "room_revenue": 8820,
+      "fb_revenue": 1460,
+      "other_revenue": 370,
+      "total_revenue": 10650
+    },
+    {
+      "date": "2026-04-21",
+      "rooms_occupied": 43,
+      "occupancy_pct": 86,
+      "room_revenue": 8060,
+      "fb_revenue": 1310,
+      "other_revenue": 325,
+      "total_revenue": 9695
+    },
+    {
+      "date": "2026-04-22",
+      "rooms_occupied": 38,
+      "occupancy_pct": 76,
+      "room_revenue": 7130,
+      "fb_revenue": 1080,
+      "other_revenue": 265,
+      "total_revenue": 8475
+    },
+    {
+      "date": "2026-04-23",
+      "rooms_occupied": 35,
+      "occupancy_pct": 70,
+      "room_revenue": 6560,
+      "fb_revenue": 970,
+      "other_revenue": 230,
+      "total_revenue": 7760
+    },
+    {
+      "date": "2026-04-24",
+      "rooms_occupied": 36,
+      "occupancy_pct": 72,
+      "room_revenue": 6750,
+      "fb_revenue": 1010,
+      "other_revenue": 245,
+      "total_revenue": 8005
+    },
+    {
+      "date": "2026-04-25",
+      "rooms_occupied": 40,
+      "occupancy_pct": 80,
+      "room_revenue": 7500,
+      "fb_revenue": 1160,
+      "other_revenue": 285,
+      "total_revenue": 8945
+    },
+    {
+      "date": "2026-04-26",
+      "rooms_occupied": 44,
+      "occupancy_pct": 88,
+      "room_revenue": 8250,
+      "fb_revenue": 1300,
+      "other_revenue": 320,
+      "total_revenue": 9870
+    },
+    {
+      "date": "2026-04-27",
+      "rooms_occupied": 46,
+      "occupancy_pct": 92,
+      "room_revenue": 8630,
+      "fb_revenue": 1400,
+      "other_revenue": 360,
+      "total_revenue": 10390
+    },
+    {
+      "date": "2026-04-28",
+      "rooms_occupied": 48,
+      "occupancy_pct": 96,
+      "room_revenue": 9000,
+      "fb_revenue": 1490,
+      "other_revenue": 385,
+      "total_revenue": 10875
+    },
+    {
+      "date": "2026-04-29",
+      "rooms_occupied": 47,
+      "occupancy_pct": 94,
+      "room_revenue": 8820,
+      "fb_revenue": 1450,
+      "other_revenue": 370,
+      "total_revenue": 10640
+    },
+    {
+      "date": "2026-04-30",
+      "rooms_occupied": 45,
+      "occupancy_pct": 90,
+      "room_revenue": 8440,
+      "fb_revenue": 1380,
+      "other_revenue": 345,
+      "total_revenue": 10165
+    },
+    {
+      "date": "2026-05-01",
+      "rooms_occupied": 40,
+      "occupancy_pct": 80,
+      "room_revenue": 7500,
+      "fb_revenue": 1150,
+      "other_revenue": 285,
+      "total_revenue": 8935
+    },
+    {
+      "date": "2026-05-02",
+      "rooms_occupied": 38,
+      "occupancy_pct": 76,
+      "room_revenue": 7130,
+      "fb_revenue": 1090,
+      "other_revenue": 260,
+      "total_revenue": 8480
+    },
+    {
+      "date": "2026-05-03",
+      "rooms_occupied": 39,
+      "occupancy_pct": 78,
+      "room_revenue": 7310,
+      "fb_revenue": 1110,
+      "other_revenue": 270,
+      "total_revenue": 8690
+    },
+    {
+      "date": "2026-05-04",
+      "rooms_occupied": 41,
+      "occupancy_pct": 82,
+      "room_revenue": 7690,
+      "fb_revenue": 1180,
+      "other_revenue": 295,
+      "total_revenue": 9165
+    },
+    {
+      "date": "2026-05-05",
+      "rooms_occupied": 43,
+      "occupancy_pct": 86,
+      "room_revenue": 8060,
+      "fb_revenue": 1260,
+      "other_revenue": 320,
+      "total_revenue": 9640
+    },
+    {
+      "date": "2026-05-06",
+      "rooms_occupied": 38,
+      "occupancy_pct": 76,
+      "room_revenue": 7130,
+      "fb_revenue": 1090,
+      "other_revenue": 265,
+      "total_revenue": 8485
+    }
+  ],
+  "competitor_rates": {
+    "date": "2026-05-06",
+    "competitors": [
+      {
+        "name": "The Driskill Hotel",
+        "distance_miles": 0.4,
+        "star_rating": 4,
+        "standard_king": 189,
+        "deluxe_king": 229,
+        "suite": 349,
+        "occupancy_est_pct": 88,
+        "source": "Hotels.com"
+      },
+      {
+        "name": "Hilton Austin",
+        "distance_miles": 0.6,
+        "star_rating": 4,
+        "standard_king": 175,
+        "deluxe_king": 210,
+        "suite": 320,
+        "occupancy_est_pct": 82,
+        "source": "Booking.com"
+      },
+      {
+        "name": "Marriott Austin Downtown",
+        "distance_miles": 0.8,
+        "star_rating": 4,
+        "standard_king": 182,
+        "deluxe_king": 219,
+        "suite": 335,
+        "occupancy_est_pct": 85,
+        "source": "Expedia"
+      },
+      {
+        "name": "Hyatt Regency Austin",
+        "distance_miles": 1.1,
+        "star_rating": 4,
+        "standard_king": 169,
+        "deluxe_king": 205,
+        "suite": 310,
+        "occupancy_est_pct": 79,
+        "source": "Hotels.com"
+      },
+      {
+        "name": "AC Hotel Austin Downtown",
+        "distance_miles": 0.5,
+        "star_rating": 3,
+        "standard_king": 155,
+        "deluxe_king": 189,
+        "suite": 275,
+        "occupancy_est_pct": 76,
+        "source": "Booking.com"
+      }
+    ],
+    "our_current_rates": {
+      "standard_king": 149,
+      "standard_double": 129,
+      "deluxe_king": 179,
+      "deluxe_double": 159,
+      "junior_suite": 229,
+      "executive_suite": 299,
+      "penthouse_suite": 499
+    },
+    "market_avg": {
+      "standard_king": 174,
+      "deluxe_king": 210,
+      "suite": 318
+    }
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "documents": [
+    {
+      "doc_id": "DOC-001",
+      "type": "vendor_invoice",
+      "filename": "invoice_austin_hvac_pro_may2026.pdf",
+      "vendor": "Austin HVAC Pro",
+      "vendor_id": "V-01",
+      "invoice_number": "AHP-4421",
+      "invoice_date": "2026-05-05",
+      "due_date": "2026-05-19",
+      "line_items": [
+        {
+          "description": "HVAC diagnostic — Room 105",
+          "qty": 1,
+          "unit_price": 85,
+          "total": 85
+        },
+        {
+          "description": "Compressor replacement — Room 105",
+          "qty": 1,
+          "unit_price": 420,
+          "total": 420
+        },
+        {
+          "description": "Labor (3 hrs)",
+          "qty": 3,
+          "unit_price": 95,
+          "total": 285
+        },
+        {
+          "description": "Parts & materials",
+          "qty": 1,
+          "unit_price": 110,
+          "total": 110
+        }
+      ],
+      "subtotal": 900,
+      "tax": 74.25,
+      "total_amount": 974.25,
+      "payment_status": "unpaid",
+      "notes": "Room 105 AC compressor fully replaced. 90-day parts warranty.",
+      "tags": ["HVAC", "Room 105", "maintenance", "urgent"]
+    },
+    {
+      "doc_id": "DOC-002",
+      "type": "vendor_invoice",
+      "filename": "invoice_lone_star_plumbing_may2026.pdf",
+      "vendor": "Lone Star Plumbing",
+      "vendor_id": "V-02",
+      "invoice_number": "LSP-8832",
+      "invoice_date": "2026-05-05",
+      "due_date": "2026-05-19",
+      "line_items": [
+        {
+          "description": "Jacuzzi thermostat replacement — Room 501",
+          "qty": 1,
+          "unit_price": 130,
+          "total": 130
+        },
+        {
+          "description": "Labor (2 hrs)",
+          "qty": 2,
+          "unit_price": 90,
+          "total": 180
+        },
+        {
+          "description": "Emergency call surcharge",
+          "qty": 1,
+          "unit_price": 50,
+          "total": 50
+        }
+      ],
+      "subtotal": 360,
+      "tax": 29.7,
+      "total_amount": 389.7,
+      "payment_status": "paid",
+      "paid_date": "2026-05-05",
+      "notes": "VIP guest in Room 501. Resolved same day. Thermostat under manufacturer warranty — cost may be partially recoverable.",
+      "tags": ["Plumbing", "Room 501", "VIP", "Penthouse"]
+    },
+    {
+      "doc_id": "DOC-003",
+      "type": "vendor_invoice",
+      "filename": "invoice_capitol_electricians_may2026.pdf",
+      "vendor": "Capitol Electricians",
+      "vendor_id": "V-03",
+      "invoice_number": "CE-3310",
+      "invoice_date": "2026-05-05",
+      "due_date": "2026-05-19",
+      "line_items": [
+        {
+          "description": "Motion sensor replacement — Floor 3 hallway",
+          "qty": 2,
+          "unit_price": 55,
+          "total": 110
+        },
+        {
+          "description": "Wiring inspection",
+          "qty": 1,
+          "unit_price": 75,
+          "total": 75
+        },
+        {
+          "description": "Labor (1.5 hrs)",
+          "qty": 1.5,
+          "unit_price": 110,
+          "total": 165
+        }
+      ],
+      "subtotal": 350,
+      "tax": 28.88,
+      "total_amount": 378.88,
+      "payment_status": "unpaid",
+      "notes": "Two sensors replaced on Floor 3 hallway. No wiring issues found.",
+      "tags": ["Electrical", "Floor 3", "safety", "hallway"]
+    },
+    {
+      "doc_id": "DOC-004",
+      "type": "vendor_contract",
+      "filename": "contract_quickfix_general_2026.pdf",
+      "vendor": "QuickFix General",
+      "vendor_id": "V-04",
+      "contract_number": "QFG-CTR-2026-07",
+      "start_date": "2026-01-01",
+      "end_date": "2026-12-31",
+      "auto_renewal": true,
+      "scope_of_work": [
+        "General repairs (furniture, fixtures, fittings)",
+        "Appliance replacement (TVs, mini fridges, microwaves)",
+        "Carpentry and door repairs",
+        "Painting and touch-ups"
+      ],
+      "pricing_model": "flat_rate",
+      "flat_rates": {
+        "standard_call": 75,
+        "hourly_labor": 85,
+        "emergency_surcharge": 50
+      },
+      "payment_terms": "Net 14",
+      "sla": {
+        "standard_response_hours": 4,
+        "emergency_response_hours": 1
+      },
+      "contact": "Dave Moreno",
+      "contact_phone": "+1 (512) 883-5540",
+      "notes": "Preferred general vendor since 2024. Reliable, no markup on materials.",
+      "tags": ["contract", "general", "preferred vendor", "annual"]
+    },
+    {
+      "doc_id": "DOC-005",
+      "type": "vendor_contract",
+      "filename": "contract_austin_elevators_2026.pdf",
+      "vendor": "Austin Elevators LLC",
+      "vendor_id": "V-05",
+      "contract_number": "AEL-CTR-2026-03",
+      "start_date": "2026-03-01",
+      "end_date": "2027-02-28",
+      "auto_renewal": true,
+      "scope_of_work": [
+        "Monthly preventive maintenance on Elevator 1 and Elevator 2",
+        "Emergency breakdown response",
+        "Annual safety compliance inspection",
+        "Parts and labor for covered repairs"
+      ],
+      "pricing_model": "retainer_plus_callout",
+      "pricing": {
+        "monthly_retainer": 650,
+        "emergency_callout": 350,
+        "major_repair_hourly": 195
+      },
+      "payment_terms": "Net 30",
+      "sla": {
+        "preventive_maintenance": "Monthly — first Monday",
+        "emergency_response_hours": 2
+      },
+      "contact": "Sandra Reyes",
+      "contact_phone": "+1 (512) 441-6620",
+      "compliance": {
+        "next_inspection_due": "2026-09-01",
+        "last_inspection": "2026-03-01",
+        "inspection_body": "Texas Department of Insurance"
+      },
+      "notes": "Elevator 2 incident on 2026-05-06 will be billed as emergency callout ($350). Check if covered under monthly retainer.",
+      "tags": ["contract", "elevator", "compliance", "safety", "retainer"]
+    },
+    {
+      "doc_id": "DOC-006",
+      "type": "license",
+      "filename": "hotel_operating_license_2026.pdf",
+      "issuer": "City of Austin — Development Services",
+      "license_number": "HOL-2026-ATX-00847",
+      "issued_date": "2026-01-15",
+      "expiry_date": "2026-12-31",
+      "renewal_reminder_days": 60,
+      "status": "active",
+      "notes": "Annual hotel operating license. Renewal application must be filed by Nov 1, 2026.",
+      "tags": ["license", "compliance", "city", "annual"]
+    },
+    {
+      "doc_id": "DOC-007",
+      "type": "insurance_policy",
+      "filename": "commercial_property_insurance_2026.pdf",
+      "insurer": "Travelers Insurance",
+      "policy_number": "TRV-COM-4492817",
+      "coverage_type": "Commercial Property + General Liability",
+      "start_date": "2026-02-01",
+      "end_date": "2027-01-31",
+      "annual_premium": 28400,
+      "deductible": 5000,
+      "coverage_limit": 5000000,
+      "renewal_reminder_days": 45,
+      "status": "active",
+      "notes": "Premium increased 8% from prior year. Review alternatives at renewal.",
+      "tags": ["insurance", "compliance", "property", "liability"]
+    }
+  ]
+}

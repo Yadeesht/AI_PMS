@@ -1,0 +1,79 @@
+-- Rooms
+create table rooms (
+  room_number text primary key,
+  floor int,
+  type text,
+  rate numeric,
+  status text, -- occupied | vacant | maintenance
+  smoking boolean
+);
+
+-- Bookings
+create table bookings (
+  booking_id text primary key,
+  guest_name text,
+  email text,
+  room_number text references rooms(room_number),
+  check_in date,
+  check_out date,
+  nights int,
+  rate_per_night numeric,
+  total_amount numeric,
+  paid numeric,
+  balance numeric,
+  status text, -- checked_in | confirmed | checked_out
+  source text,
+  special_requests text
+);
+
+-- Maintenance tickets
+create table maintenance_tickets (
+  ticket_id text primary key,
+  room_number text,
+  reported_by text,
+  issue text,
+  category text,
+  priority text, -- critical | high | medium | low
+  status text,   -- open | in_progress | resolved
+  reported_at timestamptz,
+  assigned_vendor text,
+  estimated_cost numeric,
+  actual_cost numeric,
+  notes text,
+  resolved_at timestamptz
+);
+
+-- Daily revenue
+create table daily_revenue (
+  date date primary key,
+  rooms_occupied int,
+  occupancy_pct numeric,
+  room_revenue numeric,
+  fb_revenue numeric,
+  other_revenue numeric,
+  total_revenue numeric
+);
+
+-- Competitor rates
+create table competitor_rates (
+  id serial primary key,
+  date date,
+  competitor_name text,
+  standard_king numeric,
+  deluxe_king numeric,
+  suite numeric,
+  occupancy_est_pct numeric
+);
+
+-- Documents
+create table documents (
+  doc_id text primary key,
+  type text,
+  filename text,
+  vendor text,
+  total_amount numeric,
+  payment_status text,
+  due_date date,
+  notes text,
+  tags text[]
+);
