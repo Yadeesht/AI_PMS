@@ -7,7 +7,7 @@ import dotenv
 
 dotenv.load_dotenv()
 
-SUPABASE_URL = "https://eabsuoftlornvrrmivui.supabase.co"
+SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 DATA_DIR = Path(__file__).resolve().parent / "data"
 
@@ -33,8 +33,8 @@ def clear_table(table_name, key_column):
 
 
 if __name__ == "__main__":
-    if not SUPABASE_KEY:
-        raise SystemExit("SUPABASE_KEY is not set in the environment")
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        raise SystemExit("SUPABASE_URL and SUPABASE_KEY must be set")
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
     clear_table("bookings", "booking_id")
