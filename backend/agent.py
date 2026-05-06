@@ -343,12 +343,12 @@ def document_qa(query: str | None = None, doc_id: str | None = None):
 @tool
 def generate_briefing(date: str | None = None):
     """Generate GM morning briefing."""
-    occupancy = get_occupancy(date)
-    daily_rev = get_revenue_summary("daily", date)
-    weekly_rev = get_revenue_summary("weekly", date)
-    open_tickets = get_maintenance_tickets("open")
-    overdue_tickets = get_maintenance_tickets("overdue")
-    pricing = suggest_pricing("standard_king", date)
+    occupancy = get_occupancy.invoke({"date": date})
+    daily_rev = get_revenue_summary.invoke({"period": "daily", "date": date})
+    weekly_rev = get_revenue_summary.invoke({"period": "weekly", "date": date})
+    open_tickets = get_maintenance_tickets.invoke({"status": "open"})
+    overdue_tickets = get_maintenance_tickets.invoke({"status": "overdue"})
+    pricing = suggest_pricing.invoke({"room_type": "standard_king", "date": date})
 
     lines = [
         f"Date: {occupancy['date']}",
