@@ -5,7 +5,6 @@ from statistics import mean
 import dotenv
 from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_openai import AzureChatOpenAI
 from langgraph.prebuilt import create_react_agent
 from supabase import create_client
 
@@ -388,12 +387,13 @@ TOOLS = [
 
 def build_agent():
     _get_supabase()
-    model_name = os.getenv("MODEL_NAME", "gpt-4.1-mini")
-    if model_name.startswith("gemini"):
-        model = ChatGoogleGenerativeAI(
-            model=model_name,
-            google_api_key=os.getenv("GEMINI_API_KEY"),
-        )
+    model_name = os.getenv("MODEL_NAME", "gemini-1.5-flash")
+    if not model_name.startswith("gemini"):
+        raise SystemExit("MODEL_NAME must be a Gemini model name")
+    model = ChatGoogleGenerativeAI(
+        model=model_name,
+        google_api_key=os.getenv("GEMINI_API_KEY"),
+    )
     return create_react_agent(model, TOOLS)
 
 
