@@ -54,10 +54,11 @@ type ChatMessage = {
   content: string
 }
 
-const API_BASE =
+const rawApiBase =
   import.meta.env.VITE_API_URL ??
   import.meta.env.VITE_API_BASE ??
   'http://localhost:8000'
+const API_BASE = rawApiBase.replace(/\/+$/, '')
 
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: '🏠' },
