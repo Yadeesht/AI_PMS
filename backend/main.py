@@ -16,9 +16,6 @@ from agent import (
 app = FastAPI()
 agent = build_agent()
 
-origins_env = os.getenv("CORS_ORIGINS", "*")
-allow_origins = [origin.strip() for origin in origins_env.split(",") if origin.strip()]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -40,9 +37,9 @@ async def health():
 @app.get("/dashboard")
 async def dashboard():
     return {
-        "occupancy": get_occupancy(),
-        "revenue": get_revenue_summary(),
-        "maintenance": get_maintenance_tickets(),
+        "occupancy": get_occupancy.invoke({}),
+        "revenue": get_revenue_summary.invoke({}),
+        "maintenance": get_maintenance_tickets.invoke({}),
     }
 
 
@@ -55,5 +52,5 @@ async def chat(request: ChatRequest):
 @app.post("/documents/upload")
 async def upload_doc(file: UploadFile = File(...)):
     await file.read()
-    result = document_qa(query=file.filename)
+    result = document_qa.invoke({"query": file.filename})
     return {"filename": file.filename, "extracted_fields": result}

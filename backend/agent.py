@@ -138,7 +138,7 @@ def get_revenue_summary(period: str = "daily", date: str | None = None):
 def get_maintenance_tickets(status: str = "open", overdue_hours: int = 24):
     """Return maintenance tickets filtered by status or overdue."""
     tickets = _get_supabase().table("maintenance_tickets").select("*").execute().data
-    now = dt.datetime.now()
+    now = dt.datetime.now(dt.timezone.utc)
 
     def is_overdue(ticket):
         if ticket.get("status") not in {"open", "in_progress"}:
@@ -146,6 +146,8 @@ def get_maintenance_tickets(status: str = "open", overdue_hours: int = 24):
         if not ticket.get("reported_at"):
             return False
         reported_at = dt.datetime.fromisoformat(ticket["reported_at"])
+        if reported_at.tzinfo is None:
+            reported_at = reported_at.replace(tzinfo=dt.timezone.utc)
         age_hours = (now - reported_at).total_seconds() / 3600
         return age_hours >= overdue_hours
 
@@ -387,8 +389,8 @@ TOOLS = [
 
 def build_agent():
     _get_supabase()
-    model_name = os.getenv("MODEL_NAME", "gemini-1.5-flash")
-    if not model_name.startswith("gemini"):
+    model_name = os.getenv("MODEL_NAME", "gemini-1.5-flash").strip()
+    if not model_name or not model_name.startswith("gemini"):
         raise SystemExit("MODEL_NAME must be a Gemini model name")
     model = ChatGoogleGenerativeAI(
         model=model_name,
