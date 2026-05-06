@@ -63,15 +63,15 @@ const API_BASE = rawApiBase.replace(/\/+$/, '')
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: '🏠' },
   { id: 'chat', label: 'AI Chat', icon: '💬' },
-  { id: 'maintenance', label: 'Maintenance', icon: '🔧' },
-  { id: 'pricing', label: 'Pricing', icon: '💰' },
+  { id: 'maintenance', label: 'Property Services', icon: '🔧' },
+  { id: 'pricing', label: 'Market Analysis', icon: '💰' },
   { id: 'documents', label: 'Documents', icon: '🗂️' },
 ] as const
 
 const suggestedPrompts = [
-  "What's today's occupancy?",
-  'Any overdue maintenance?',
-  'Generate morning briefing',
+  "What's today's occupancy by unit?",
+  'Any overdue service requests?',
+  'Generate property briefing',
 ]
 
 const vendorOptions = [
@@ -83,15 +83,21 @@ const vendorOptions = [
 ]
 
 const competitorRates = [
-  { name: 'The Driskill', standard: 189, deluxe: 229, suite: 349 },
-  { name: 'Hilton Austin', standard: 175, deluxe: 210, suite: 320 },
-  { name: 'Marriott DT', standard: 182, deluxe: 219, suite: 335 },
-  { name: 'Hyatt Regency', standard: 169, deluxe: 205, suite: 310 },
-  { name: 'AC Hotel', standard: 155, deluxe: 189, suite: 275 },
+  { name: 'Cedar Lofts', standard: 189, deluxe: 229, suite: 349 },
+  { name: 'Riverwalk Residences', standard: 175, deluxe: 210, suite: 320 },
+  { name: 'Crestline Commons', standard: 182, deluxe: 219, suite: 335 },
+  { name: 'The Grove Collection', standard: 169, deluxe: 205, suite: 310 },
+  { name: 'Market Square Flats', standard: 155, deluxe: 189, suite: 275 },
 ]
 
 const currentRates = { standard: 149, deluxe: 179, suite: 299 }
 const recommendedRates = { standard: 169, deluxe: 199, suite: 299 }
+
+const rateLabels = {
+  standard: 'Studio',
+  deluxe: '2 Bed',
+  suite: 'Penthouse',
+} as const
 
 const documentsList = [
   {
@@ -101,7 +107,7 @@ const documentsList = [
   },
   { name: 'invoice_lone_star_plumbing', status: 'Paid', amount: '$389' },
   { name: 'contract_quickfix_general_2026', status: 'Active', amount: 'N/A' },
-  { name: 'hotel_operating_license_2026', status: 'Active', amount: 'N/A' },
+  { name: 'property_management_license_2026', status: 'Active', amount: 'N/A' },
   { name: 'commercial_property_insurance', status: 'Active', amount: '$28.4K' },
 ]
 
@@ -132,7 +138,7 @@ function App() {
     {
       role: 'assistant',
       content:
-        "Good morning! I'm your hotel AI. Ask me anything about today's operations.",
+        "Good morning! I'm your property AI. Ask me anything about today's portfolio operations.",
     },
   ])
   const [chatInput, setChatInput] = useState('')
@@ -178,7 +184,7 @@ function App() {
         const response = await fetch(`${API_BASE}/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'Generate morning briefing' }),
+          body: JSON.stringify({ message: 'Generate property briefing for the portfolio' }),
         })
         if (!response.ok) throw new Error('Briefing fetch failed')
         const data = await response.json()
@@ -205,7 +211,7 @@ function App() {
         const response = await fetch(`${API_BASE}/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'suggest pricing for tonight' }),
+          body: JSON.stringify({ message: 'suggest pricing for residential units this week' }),
         })
         if (!response.ok) throw new Error('Pricing fetch failed')
         const data = await response.json()
@@ -311,10 +317,10 @@ function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-icon">🏨</div>
+          <div className="brand-icon">🏘️</div>
           <div>
-            <p className="brand-title">Skyline AI</p>
-            <p className="brand-subtitle">Operations Control</p>
+            <p className="brand-title">Skyline Estates AI</p>
+            <p className="brand-subtitle">Property Operations</p>
           </div>
         </div>
         <nav className="nav">
@@ -335,15 +341,15 @@ function App() {
           <p className="sidebar-card-value">
             {occupancy ? `${occupancy.occupancy_pct}%` : '--'}
           </p>
-          <p className="sidebar-card-subtext">Occupancy this morning</p>
+          <p className="sidebar-card-subtext">Units occupied this morning</p>
         </div>
       </aside>
 
       <main className="main">
         <header className="topbar">
           <div>
-            <p className="eyebrow">Skyline Inn & Suites</p>
-            <h1>Operational Command</h1>
+            <p className="eyebrow">Skyline Estates Portfolio</p>
+            <h1>Portfolio Command Center</h1>
             <p className="muted">Austin, TX</p>
           </div>
           <div className="time-card">
@@ -361,23 +367,23 @@ function App() {
                 </p>
                 <p className="stat-label">Occupancy</p>
                 <p className="stat-meta">
-                  {occupancy?.occupied_count ?? 0} rooms occupied
+                  {occupancy?.occupied_count ?? 0} units occupied
                 </p>
               </div>
               <div className="stat-card">
                 <p className="stat-value">
                   {dashboardLoading ? '--' : formatCurrency(revenue?.total_revenue)}
                 </p>
-                <p className="stat-label">Revenue Today</p>
+                <p className="stat-label">Rental Revenue Today</p>
                 <p className="stat-meta">
-                  RevPAR {revenue?.revpar ? `$${revenue.revpar}` : '--'}
+                  RevPAU {revenue?.revpar ? `$${revenue.revpar}` : '--'}
                 </p>
               </div>
               <div className="stat-card">
                 <p className="stat-value">
                   {dashboardLoading ? '--' : dashboard?.maintenance?.count ?? 0}
                 </p>
-                <p className="stat-label">Maintenance</p>
+                <p className="stat-label">Service Requests</p>
                 <p className="stat-meta">
                   {dashboard?.maintenance?.overdue_count ?? 0} overdue
                 </p>
@@ -386,7 +392,7 @@ function App() {
                 <p className="stat-value">
                   {dashboardLoading ? '--' : occupancy?.occupied_count ?? 0}
                 </p>
-                <p className="stat-label">Rooms Filled</p>
+                <p className="stat-label">Units Filled</p>
                 <p className="stat-meta">Out of {occupancy?.total_rooms ?? 0}</p>
               </div>
             </div>
@@ -394,7 +400,7 @@ function App() {
             <div className="grid-2">
               <div className="panel">
                 <div className="panel-header">
-                  <h2>AI Morning Briefing</h2>
+                  <h2>AI Property Briefing</h2>
                   <span className="chip">Auto-generated</span>
                 </div>
                 <div className="briefing">
@@ -409,7 +415,7 @@ function App() {
               </div>
               <div className="panel">
                 <div className="panel-header">
-                  <h2>Active Alerts</h2>
+                  <h2>Active Service Alerts</h2>
                   <span className="chip">Priority</span>
                 </div>
                 <div className="alerts">
@@ -420,7 +426,7 @@ function App() {
                     <div className={`alert ${ticket.priority}`} key={ticket.ticket_id}>
                       <div>
                         <p className="alert-title">
-                          {ticket.issue} - {ticket.room_number}
+                          {ticket.issue} - Unit {ticket.room_number}
                         </p>
                         <p className="alert-meta">
                           {ticket.assigned_vendor ? ticket.assigned_vendor : 'Unassigned'}
@@ -439,8 +445,8 @@ function App() {
           <section className="page">
             <div className="chat-panel">
               <div className="chat-header">
-                <h2>Hotel AI Assistant</h2>
-                <p className="muted">Operational questions, answered instantly.</p>
+                <h2>Property AI Assistant</h2>
+                <p className="muted">Portfolio questions, answered instantly.</p>
               </div>
               <div className="chat-window">
                 {chatMessages.map((message, index) => (
@@ -500,7 +506,7 @@ function App() {
           <section className="page">
             <div className="panel">
               <div className="panel-header maintenance-header">
-                <h2>Maintenance</h2>
+                <h2>Property Services</h2>
                 <div className="filters">
                   {['all', 'open', 'in_progress'].map((filter) => (
                     <button
@@ -521,7 +527,7 @@ function App() {
                       <div className={`badge ${ticket.priority}`}>{ticket.priority}</div>
                       <div>
                         <p className="ticket-title">
-                          {ticket.issue} - {ticket.room_number}
+                          {ticket.issue} - Unit {ticket.room_number}
                         </p>
                         <p className="ticket-meta">
                           {ticket.assigned_vendor ?? 'Unassigned'} - Est. $
@@ -559,8 +565,8 @@ function App() {
           <section className="page">
             <div className="panel pricing-panel">
               <div className="panel-header">
-                <h2>Pricing Intelligence</h2>
-                <span className="chip">Tonight - May 6</span>
+                <h2>Market Intelligence</h2>
+                <span className="chip">Portfolio Snapshot - May 6</span>
               </div>
               <div className="pricing-rec">
                 <div>
@@ -569,7 +575,7 @@ function App() {
                   {!pricingLoading && (
                     <ReactMarkdown>
                       {pricingNote ||
-                        "You're priced $20-$25 below market average. Competitors sit near 84% occupancy. Raise Standard King to $169 for upside tonight."}
+                        "You're priced $20-$25 below market average. Nearby comps sit near 84% occupancy. Raise Studio pricing to $169 for better upside this week."}
                     </ReactMarkdown>
                   )}
                 </div>
@@ -577,17 +583,17 @@ function App() {
               </div>
               <div className="pricing-table">
                 <div className="pricing-row header">
-                  <span>Hotel</span>
-                  <span>Std King</span>
-                  <span>Deluxe</span>
-                  <span>Suite</span>
+                  <span>Property</span>
+                  <span>{rateLabels.standard}</span>
+                  <span>{rateLabels.deluxe}</span>
+                  <span>{rateLabels.suite}</span>
                 </div>
-                {competitorRates.map((hotel) => (
-                  <div className="pricing-row" key={hotel.name}>
-                    <span>{hotel.name}</span>
-                    <span>${hotel.standard}</span>
-                    <span>${hotel.deluxe}</span>
-                    <span>${hotel.suite}</span>
+                {competitorRates.map((property) => (
+                  <div className="pricing-row" key={property.name}>
+                    <span>{property.name}</span>
+                    <span>${property.standard}</span>
+                    <span>${property.deluxe}</span>
+                    <span>${property.suite}</span>
                   </div>
                 ))}
                 <div className="pricing-row highlight">
@@ -612,12 +618,12 @@ function App() {
             <div className="panel documents-panel">
               <div className="panel-header">
                 <h2>Document Intelligence</h2>
-                <span className="chip">PDFs and Contracts</span>
+                <span className="chip">Leases and Contracts</span>
               </div>
               <div className="upload-box">
                 <div>
                   <p className="upload-title">Drop a PDF here or click to upload</p>
-                  <p className="muted">Invoices - Contracts - Licenses</p>
+                  <p className="muted">Leases - Contracts - Compliance</p>
                   {uploadState && <p className="upload-state">{uploadState}</p>}
                 </div>
                 <input
@@ -642,12 +648,12 @@ function App() {
                   ))}
                 </div>
                 <div className="doc-ask">
-                  <p className="doc-ask-title">Ask about your documents</p>
+                  <p className="doc-ask-title">Ask about your portfolio documents</p>
                   <div className="doc-ask-input">
                     <input
                       value={docQuestion}
                       onChange={(event) => setDocQuestion(event.target.value)}
-                      placeholder='e.g. "What invoices are unpaid?"'
+                      placeholder='e.g. "Which leases are unpaid?"'
                       onKeyDown={(event) => {
                         if (event.key === 'Enter') {
                           event.preventDefault()
