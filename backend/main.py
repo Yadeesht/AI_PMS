@@ -29,6 +29,24 @@ class ChatRequest(BaseModel):
     session_id: str = "default"
 
 
+def _normalize_reply(content) -> str:
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts: list[str] = []
+        for part in content:
+            if isinstance(part, str):
+                parts.append(part)
+                continue
+            if isinstance(part, dict):
+                text = part.get("text") or part.get("content")
+                if text:
+                    parts.append(str(text))
+        joined = "\n".join(parts).strip()
+        return joined or str(content)
+    return str(content)
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok"}
@@ -46,7 +64,8 @@ async def dashboard():
 @app.post("/chat")
 async def chat(request: ChatRequest):
     response = agent.invoke({"messages": [HumanMessage(request.message)]})
-    return {"reply": response["messages"][-1].content}
+    reply = _normalize_reply(response["messages"][-1].content)
+    return {"reply": reply}
 
 
 @app.post("/documents/upload")
